@@ -2,9 +2,14 @@
     "name": "fullstack-exercise",
     "version": "0.0.0",
     "scripts": {
+        "dev:frontend": "cd frontend && npm run dev",
+        "dev:backend": "cd backend && npm run dev",
         "start:frontend": "cd frontend && npm run start",
+        "start:backend": "cd backend && npm run start",
         "build:frontend": "cd frontend && npm run build",
-        "test:frontend": "cd frontend && npm run test"
+        "build:backend": "cd backend && npm run start",
+        "test:frontend": "cd frontend && npm run test",
+        "test:backend": "cd backend && npm run test"
     },
     "private": true
 }
