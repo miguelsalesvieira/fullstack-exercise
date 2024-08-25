@@ -1,0 +1,13 @@
+<div
+  class="grid border border-white/10 rounded-xl overflow-hidden"
+  [ngStyle]="gridStyle"
+>
+  <ng-container *ngFor="let positionX of grid">
+    <div
+      *ngFor="let positionY of positionX"
+      class="bg-white/5 w-full text-center text-white py-6"
+    >
+      {{ positionY }}
+    </div>
+  </ng-container>
+</div>
