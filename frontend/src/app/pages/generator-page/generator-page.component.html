@@ -1,0 +1,27 @@
+<div class="flex flex-col gap-8 items-center p-4">
+  <div class="relative flex items-center justify-between w-full">
+    <app-input
+      [value]="gridService.bias"
+      [label]="'Bias/Weighting Factor'"
+      [placeholder]="'Input Character'"
+      (onChange)="handleOnChangeInput($event)"
+    ></app-input>
+    <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+      <app-clock
+        [hours]="gridService.hours"
+        [minutes]="gridService.minutes"
+        [seconds]="gridService.seconds"
+      >
+      </app-clock>
+    </div>
+    <app-button
+      [label]="'Generate 2D Grid'"
+      (onClick)="handleOnClickGenerate()"
+    ></app-button>
+  </div>
+  <app-grid [grid]="gridService.grid"></app-grid>
+  <app-live-code
+    [code]="gridService.code"
+    [isLive]="gridService.isLive"
+  ></app-live-code>
+</div>

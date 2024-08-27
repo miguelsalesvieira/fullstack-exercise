@@ -1,0 +1,17 @@
+{
+    "backend": {
+        "host": "http://localhost",
+        "port": 3000
+    },
+    "frontend": {
+        "host": "http://localhost",
+        "port": 4200
+    },
+    "timers": {
+        "refresh": 2000
+    },
+    "grid": {
+        "rows": 10,
+        "cols": 10
+    }
+}
