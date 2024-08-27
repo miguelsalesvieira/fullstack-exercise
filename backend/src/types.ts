@@ -19,3 +19,10 @@ export type Code = {
     code0: number;
     code1: number;
 };
+
+export type Payment = {
+    name: string;
+    amount: number;
+    code: Code;
+    grid: Grid;
+};

@@ -1,0 +1,26 @@
+<div
+  *ngIf="payments.length > 0"
+  class="bg-white/5 p-2 pb-3 border border-white/10 rounded-xl"
+>
+  <table class="table-auto w-full">
+    <thead class="text-white">
+      <tr>
+        <th class="text-start py-2 px-4">Name</th>
+        <th class="text-start py-2 px-4">Amount</th>
+        <th class="text-start py-2 px-4">Code</th>
+        <th class="text-start py-2 px-4">Grid</th>
+      </tr>
+    </thead>
+    <tbody class="text-white/80 text-xs">
+      <tr *ngFor="let payment of payments">
+        <td class="py-2 px-4">{{ payment.name }}</td>
+        <td class="py-2 px-4">{{ payment.amount }}</td>
+        <td class="py-2 px-4">{{ payment.code.code0 + payment.code.code1 }}</td>
+        <td class="py-2 px-4">{{ payment.grid.length }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h3 *ngIf="payments.length <= 0" class="text-white/80 text-sm">
+  No payments available
+</h3>

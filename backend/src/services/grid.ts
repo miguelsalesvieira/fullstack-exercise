@@ -1,5 +1,10 @@
-import { Grid } from "../types";
-import { validBias } from "./code";
+import { Code, Grid } from "../types";
+import {
+    getCharacter,
+    getCode,
+    separateDigits,
+    validBias,
+} from "./code";
 
 export function generateRandomLetter(): string {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -63,4 +68,30 @@ export function generateGrid(
         }
 
     return grid;
+}
+
+export function generateGridWithCode(
+    rows: number,
+    cols: number,
+    seconds: number,
+    bias?: string
+): { grid: Grid; code: Code } {
+    // Generate grid
+    const grid = generateGrid(rows, cols, bias);
+
+    // Get the grid's characters from the seconds
+    const { digit0, digit1 } = separateDigits(seconds);
+    const character1 = getCharacter(grid, {
+        x: digit0,
+        y: digit1,
+    });
+    const character2 = getCharacter(grid, {
+        x: digit1,
+        y: digit0,
+    });
+
+    // Get the code for the characters
+    const code = getCode(grid, character1, character2);
+
+    return { grid, code };
 }

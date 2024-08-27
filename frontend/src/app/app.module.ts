@@ -12,6 +12,9 @@ import { InputComponent } from './components/input/input.component';
 import { ClockComponent } from './components/clock/clock.component';
 import { GridComponent } from './components/grid/grid.component';
 import { LiveCodeComponent } from './components/live-code/live-code.component';
+import { PaymentsPageComponent } from './pages/payments-page/payments-page.component';
+import { PaymentsListComponent } from './components/payments-list/payments-list.component';
+import { InputNumberComponent } from './components/input-number/input-number.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,9 @@ import { LiveCodeComponent } from './components/live-code/live-code.component';
     ClockComponent,
     GridComponent,
     LiveCodeComponent,
+    PaymentsPageComponent,
+    PaymentsListComponent,
+    InputNumberComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],

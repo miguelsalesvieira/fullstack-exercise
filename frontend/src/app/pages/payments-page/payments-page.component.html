@@ -1,0 +1,21 @@
+<div class="p-4">
+  <div class="flex items-end gap-4 mb-4">
+    <app-input
+      [value]="paymentName"
+      [label]="'Payment'"
+      [placeholder]="'Payment Name'"
+      (onChange)="handleOnChangeName($event)"
+    ></app-input>
+    <app-input-number
+      [value]="paymentAmount"
+      [label]="'Amount'"
+      [placeholder]="'Payment Amount'"
+      (onChange)="handleOnChangeAmount($event)"
+    ></app-input-number>
+    <app-button
+      [label]="'Add Payment'"
+      (onClick)="handleOnClickAdd()"
+    ></app-button>
+  </div>
+  <app-payments-list [payments]="paymentsService.payments"></app-payments-list>
+</div>
