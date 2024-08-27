@@ -6,12 +6,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./input.component.css'],
 })
 export class InputComponent {
+  @Input() value: string;
   @Input() label: string;
   @Input() placeholder: string;
 
   @Output() onChange = new EventEmitter<string>();
 
   constructor() {
+    this.value = '';
     this.label = 'Input';
     this.placeholder = 'Placeholder';
   }
