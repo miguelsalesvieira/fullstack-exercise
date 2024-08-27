@@ -13,24 +13,18 @@ export class GridService {
   public seconds: number = 0;
   public code: string = '00';
   public isLive: boolean = false;
-  public gridObservable: Observable<any>;
-
   public bias: string = '';
+  public sendBias: string = '';
   private interval: NodeJS.Timeout | null = null;
 
   constructor(
     private http: HttpClient,
     private environmentService: EnvironmentService
-  ) {
-    this.gridObservable = this.http.get(
-      `${this.environmentService.backendUrl()}/grid`
-    );
-  }
+  ) {}
 
   start(): void {
-    this.sendBias();
+    this.sendBias = this.bias;
     this.getValues();
-
     if (this.interval !== null) clearInterval(this.interval);
     this.interval = setInterval(() => {
       this.getValues();
@@ -38,25 +32,21 @@ export class GridService {
   }
 
   private getValues(): void {
-    this.gridObservable.subscribe((data) => {
-      this.grid = data.grid;
-      this.hours = data.clock.hours;
-      this.minutes = data.clock.minutes;
-      this.seconds = data.clock.seconds;
-      this.code = `${data.code.code0}${data.code.code1}`;
-      this.isLive = true;
-    });
-  }
-
-  private sendBias(): void {
     this.http
-      .post(`${this.environmentService.backendUrl()}/grid`, { bias: this.bias })
+      .get(`${this.environmentService.backendUrl()}/grid?bias=${this.sendBias}`)
       .subscribe({
         next: (data: any) => {
-          this.bias = data.bias;
+          this.grid = data.grid;
+          this.hours = data.clock.hours;
+          this.minutes = data.clock.minutes;
+          this.seconds = data.clock.seconds;
+          this.code = `${data.code.code0}${data.code.code1}`;
+          this.isLive = true;
         },
         error: (error: any) => {
-          this.bias = error.error.bias;
+          console.error(error);
+          this.isLive = false;
+          if (this.interval !== null) clearInterval(this.interval);
         },
       });
   }
