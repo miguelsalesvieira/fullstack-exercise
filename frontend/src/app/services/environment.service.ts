@@ -6,15 +6,34 @@ import settings from '../../../../settings.json';
   providedIn: 'root',
 })
 export class EnvironmentService {
-  public backend: { host: string; port: number } = {
-    host: settings.backend.host,
-    port: settings.backend.port,
+  public backend: {
+    http: { host: string; port: number };
+    websocket: { host: string; port: number };
+  } = {
+    http: {
+      host: settings.backend.http.host,
+      port: settings.backend.http.port,
+    },
+    websocket: {
+      host: settings.backend.websocket.host,
+      port: settings.backend.websocket.port,
+    },
   };
-  public refreshRate: number = settings.timers.refresh;
+  public intervals: {
+    grid: number;
+    reconnect: number;
+  } = {
+    grid: settings.intervals.grid,
+    reconnect: settings.intervals.reconnect,
+  };
 
   constructor() {}
 
-  backendUrl(): string {
-    return `${this.backend.host}:${this.backend.port}`;
+  backendHttpUrl(): string {
+    return `${this.backend.http.host}:${this.backend.http.port}`;
+  }
+
+  backendWebsocketUrl(): string {
+    return `ws://${this.backend.websocket.host}:${this.backend.websocket.port}`;
   }
 }
