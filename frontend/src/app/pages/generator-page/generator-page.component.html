@@ -8,9 +8,9 @@
     ></app-input>
     <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
       <app-clock
-        [hours]="gridService.hours"
-        [minutes]="gridService.minutes"
-        [seconds]="gridService.seconds"
+        [hours]="gridService.clock.hours"
+        [minutes]="gridService.clock.minutes"
+        [seconds]="gridService.clock.seconds"
       >
       </app-clock>
     </div>
@@ -21,7 +21,8 @@
   </div>
   <app-grid [grid]="gridService.grid"></app-grid>
   <app-live-code
-    [code]="gridService.code"
+    [code0]="gridService.code.code0"
+    [code1]="gridService.code.code1"
     [isLive]="gridService.isLive"
   ></app-live-code>
 </div>

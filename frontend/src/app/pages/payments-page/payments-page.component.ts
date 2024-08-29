@@ -26,7 +26,7 @@ export class PaymentsPageComponent {
       return;
     }
 
-    this.paymentsService.addPayment({
+    this.paymentsService.sendPayment({
       name: this.paymentName,
       amount: this.paymentAmount,
     });
