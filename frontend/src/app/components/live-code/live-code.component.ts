@@ -6,11 +6,13 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./live-code.component.css'],
 })
 export class LiveCodeComponent {
-  @Input() code: string;
+  @Input() code0: number;
+  @Input() code1: number;
   @Input() isLive: boolean;
 
   constructor() {
-    this.code = '00';
+    this.code0 = 0;
+    this.code1 = 0;
     this.isLive = false;
   }
 }

@@ -1,12 +1,7 @@
-import { Code, Grid } from "../types";
+import { Code, Grid } from '../types';
 
-export function getCode(
-    grid: Grid,
-    character1: string,
-    character2: string
-): Code {
-    if (!validBias(character1) || !validBias(character2))
-        throw new Error("Invalid character");
+export function getCode(grid: Grid, character1: string, character2: string): Code {
+    if (!validBias(character1) || !validBias(character2)) throw new Error('Invalid character');
 
     let count0 = 0,
         count1 = 0;
@@ -39,18 +34,15 @@ export function getCode(
     };
 }
 
-export function getCharacter(
-    grid: Grid,
-    position: { x: number; y: number }
-): string {
+export function getCharacter(grid: Grid, position: { x: number; y: number }): string {
     if (position.x < 0 || position.y < 0) {
-        throw new Error("Invalid position.");
+        throw new Error('Invalid position.');
     }
     if (position.y >= grid.length) {
-        throw new Error("Invalid position.");
+        throw new Error('Invalid position.');
     }
     if (position.x >= grid[position.y].length) {
-        throw new Error("Invalid position.");
+        throw new Error('Invalid position.');
     }
     return grid[position.y][position.x];
 }
@@ -60,9 +52,7 @@ export function separateDigits(number: number): {
     digit1: number;
 } {
     if (number > 99) {
-        throw new Error(
-            "Input must be a two-digit number."
-        );
+        throw new Error('Input must be a two-digit number.');
     }
 
     const digit0 = Math.floor(number / 10);
@@ -72,7 +62,8 @@ export function separateDigits(number: number): {
 }
 
 export function validBias(bias: string): boolean {
+    if (bias === '' || bias === undefined) return true;
     if (bias.length !== 1) return false;
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     return alphabet.includes(bias.toUpperCase());
 }

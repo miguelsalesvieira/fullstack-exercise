@@ -1,54 +1,59 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { EnvironmentService } from './environment.service';
+import { WebsocketService } from './websocket.service';
+import {
+  Clock,
+  Code,
+  CreateGridDto,
+  GetGridDto,
+  Grid,
+  WebsocketMessage,
+  WebsocketMessageType,
+} from 'src/types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GridService {
-  public grid: string[][] = [];
-  public hours: number = 0;
-  public minutes: number = 0;
-  public seconds: number = 0;
-  public code: string = '00';
+  public grid: Grid;
+  public clock: Clock;
+  public code: Code;
+
   public isLive: boolean = false;
   public bias: string = '';
   public sendBias: string = '';
-  private interval: NodeJS.Timeout | null = null;
 
-  constructor(
-    private http: HttpClient,
-    private environmentService: EnvironmentService
-  ) {}
+  constructor(private websocketService: WebsocketService) {
+    this.grid = [];
+    this.clock = { hours: 0, minutes: 0, seconds: 0 };
+    this.code = { code0: 0, code1: 0 };
+
+    this.websocketService.addReceiver({
+      type: WebsocketMessageType.GRID,
+      callback: (message: WebsocketMessage) => {
+        if (message.type === WebsocketMessageType.GRID) {
+          const data = new GetGridDto(message.data);
+          if (data.valid()) {
+            this.grid = data.grid;
+            this.clock = data.clock;
+            this.code = data.code;
+            this.isLive = true;
+          }
+        }
+      },
+    });
+  }
 
   start(): void {
     this.sendBias = this.bias;
-    this.getValues();
-    if (this.interval !== null) clearInterval(this.interval);
-    this.interval = setInterval(() => {
-      this.getValues();
-    }, this.environmentService.refreshRate);
-  }
+    const data = new CreateGridDto({ bias: this.sendBias });
+    if (!data.valid()) {
+      return;
+    }
 
-  private getValues(): void {
-    this.http
-      .get(`${this.environmentService.backendUrl()}/grid?bias=${this.sendBias}`)
-      .subscribe({
-        next: (data: any) => {
-          this.grid = data.grid;
-          this.hours = data.clock.hours;
-          this.minutes = data.clock.minutes;
-          this.seconds = data.clock.seconds;
-          this.code = `${data.code.code0}${data.code.code1}`;
-          this.isLive = true;
-        },
-        error: (error: any) => {
-          console.error(error);
-          this.isLive = false;
-          if (this.interval !== null) clearInterval(this.interval);
-        },
-      });
+    this.websocketService.sendMessage({
+      type: WebsocketMessageType.GRID,
+      data: data,
+    });
   }
 
   public setBias(bias: string): void {

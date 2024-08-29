@@ -10,8 +10,4 @@ export class PaymentsListComponent {
   @Input() payments: Payment[] = [];
 
   constructor() {}
-
-  ngOnChanges() {
-    console.log(this.payments);
-  }
 }
