@@ -1,47 +1,48 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { EnvironmentService } from './environment.service';
-import { Payment } from 'src/types';
+import {
+  CreatePaymentDto,
+  GetPaymentDto,
+  Payment,
+  WebsocketMessage,
+  WebsocketMessageType,
+} from 'src/types';
+import { WebsocketService } from './websocket.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaymentsService {
-  public observable: Observable<Payment[]>;
   public payments: Payment[] = [];
 
-  constructor(
-    private http: HttpClient,
-    private environmentService: EnvironmentService
-  ) {
-    this.observable = this.http.get<Payment[]>(
-      `${this.environmentService.backendUrl()}/payments`
-    );
-    this.observable.subscribe({
-      next: (data: Payment[]) => {
-        console.log(data);
-        this.payments = data;
-      },
-      error: (error: any) => {
-        console.error(error);
+  constructor(private websocketService: WebsocketService) {
+    this.websocketService.addReceiver({
+      type: WebsocketMessageType.PAYMENT,
+      callback: (message: WebsocketMessage) => {
+        if (message.type === WebsocketMessageType.PAYMENT) {
+          const payment = new GetPaymentDto(message.data);
+          if (payment.valid()) {
+            this.addPayment(payment);
+          }
+        }
       },
     });
   }
 
-  public addPayment(payment: { name: string; amount: number }): void {
-    this.http
-      .post<Payment>(
-        `${this.environmentService.backendUrl()}/payments`,
-        payment
-      )
-      .subscribe({
-        next: (data: Payment) => {
-          this.payments.push(data);
-        },
-        error: (error: any) => {
-          console.error(error);
-        },
-      });
+  public sendPayment(payment: { name: string; amount: number }): void {
+    const newPayment = new CreatePaymentDto(payment);
+    if (!newPayment.valid()) {
+      return;
+    }
+
+    this.websocketService.sendMessage({
+      type: WebsocketMessageType.PAYMENT,
+      data: newPayment,
+    });
+  }
+
+  public addPayment(payment: Payment): void {
+    if (!this.payments.find((p) => p.name === payment.name)) {
+      this.payments.push(payment);
+    }
   }
 }
