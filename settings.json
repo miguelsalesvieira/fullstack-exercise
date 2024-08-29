@@ -1,17 +1,26 @@
 {
     "backend": {
-        "host": "http://localhost",
-        "port": 3000
+        "http": {
+            "host": "http://localhost",
+            "port": 3000
+        },
+        "websocket": {
+            "host": "localhost",
+            "port": 8080
+        }
     },
     "frontend": {
         "host": "http://localhost",
         "port": 4200
     },
-    "timers": {
-        "refresh": 2000
-    },
     "grid": {
         "rows": 10,
         "cols": 10
+    },
+    "intervals": {
+        "reconnect": 5000,
+        "heartbeat": 10000,
+        "grid": 2000,
+        "bias": 4000
     }
 }
